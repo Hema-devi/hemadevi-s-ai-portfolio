@@ -14,9 +14,22 @@ const navLinks = [
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState("");
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 50);
+    const onScroll = () => {
+      setScrolled(window.scrollY > 50);
+      // Detect active section
+      const sections = navLinks.map(l => l.href.slice(1));
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const el = document.getElementById(sections[i]);
+        if (el && el.getBoundingClientRect().top <= 150) {
+          setActiveSection(sections[i]);
+          return;
+        }
+      }
+      setActiveSection("");
+    };
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -33,12 +46,16 @@ const Navbar = () => {
         </a>
 
         {/* Desktop */}
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden md:flex items-center gap-1">
           {navLinks.map((link) => (
             <a
               key={link.href}
               href={link.href}
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-200 relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[2px] after:bg-primary after:transition-all after:duration-300 hover:after:w-full"
+              className={`text-sm px-3 py-2 rounded-lg transition-all duration-200 ${
+                activeSection === link.href.slice(1)
+                  ? "text-primary bg-primary/10"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+              }`}
             >
               {link.label}
             </a>
@@ -48,7 +65,7 @@ const Navbar = () => {
         {/* Mobile toggle */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="md:hidden text-foreground"
+          className="md:hidden text-foreground p-2"
         >
           {isOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
@@ -61,15 +78,19 @@ const Navbar = () => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden glass mt-2 mx-4 rounded-lg overflow-hidden"
+            className="md:hidden glass mt-2 mx-4 rounded-xl overflow-hidden"
           >
-            <div className="flex flex-col p-4 gap-4">
+            <div className="flex flex-col p-4 gap-1">
               {navLinks.map((link) => (
                 <a
                   key={link.href}
                   href={link.href}
                   onClick={() => setIsOpen(false)}
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  className={`text-sm px-3 py-2.5 rounded-lg transition-colors ${
+                    activeSection === link.href.slice(1)
+                      ? "text-primary bg-primary/10"
+                      : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                  }`}
                 >
                   {link.label}
                 </a>

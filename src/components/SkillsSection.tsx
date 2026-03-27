@@ -43,29 +43,32 @@ const SkillsSection = () => (
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: ci * 0.15 }}
-          className="glass rounded-xl p-6 hover:scale-[1.02] transition-transform"
+          whileHover={{ y: -8 }}
+          className="glass rounded-xl p-6 group"
         >
           <div className="flex items-center gap-3 mb-6">
-            <div className="gradient-bg p-2.5 rounded-lg">
+            <div className="gradient-bg p-2.5 rounded-lg group-hover:shadow-lg group-hover:shadow-primary/20 transition-shadow">
               <cat.icon size={20} className="text-primary-foreground" />
             </div>
             <h3 className="font-heading font-semibold text-lg">{cat.title}</h3>
           </div>
           <div className="space-y-4">
-            {cat.skills.map((skill) => (
+            {cat.skills.map((skill, si) => (
               <div key={skill.name}>
                 <div className="flex justify-between text-sm mb-1.5">
                   <span className="text-foreground">{skill.name}</span>
                   <span className="text-muted-foreground">{skill.level}%</span>
                 </div>
-                <div className="h-2 rounded-full bg-muted overflow-hidden">
+                <div className="h-2.5 rounded-full bg-muted overflow-hidden">
                   <motion.div
                     initial={{ width: 0 }}
                     whileInView={{ width: `${skill.level}%` }}
                     viewport={{ once: true }}
-                    transition={{ duration: 1, delay: 0.3 }}
-                    className="h-full rounded-full gradient-bg"
-                  />
+                    transition={{ duration: 1, delay: 0.2 + si * 0.1, ease: "easeOut" }}
+                    className="h-full rounded-full gradient-bg relative"
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent to-white/20 rounded-full" />
+                  </motion.div>
                 </div>
               </div>
             ))}

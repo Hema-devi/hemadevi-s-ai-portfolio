@@ -1,21 +1,34 @@
-import { Github, Linkedin, Mail } from "lucide-react";
+import { Github, Linkedin, Mail, Heart } from "lucide-react";
 
 const Footer = () => (
-  <footer className="border-t border-border py-8">
-    <div className="container mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-      <p className="text-sm text-muted-foreground">
-        © {new Date().getFullYear()} Hemadevi R. All rights reserved.
-      </p>
-      <div className="flex gap-4">
-        <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground transition-colors">
-          <Github size={18} />
+  <footer className="border-t border-border py-10 relative overflow-hidden">
+    <div className="absolute inset-0 bg-gradient-to-t from-primary/3 to-transparent pointer-events-none" />
+    <div className="container mx-auto px-6 relative z-10">
+      <div className="flex flex-col items-center gap-6">
+        <a href="#" className="text-xl font-heading font-bold gradient-text">
+          Hemadevi R
         </a>
-        <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground transition-colors">
-          <Linkedin size={18} />
-        </a>
-        <a href="mailto:hemadevi@example.com" className="text-muted-foreground hover:text-foreground transition-colors">
-          <Mail size={18} />
-        </a>
+        <div className="flex gap-4">
+          {[
+            { icon: Github, href: "https://github.com", label: "GitHub" },
+            { icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn" },
+            { icon: Mail, href: "mailto:hemadevi@example.com", label: "Email" },
+          ].map((s) => (
+            <a
+              key={s.label}
+              href={s.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={s.label}
+              className="w-10 h-10 rounded-xl glass flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/30 transition-all"
+            >
+              <s.icon size={18} />
+            </a>
+          ))}
+        </div>
+        <p className="text-sm text-muted-foreground flex items-center gap-1">
+          © {new Date().getFullYear()} Hemadevi R. Made with <Heart size={13} className="text-primary fill-primary" /> and passion.
+        </p>
       </div>
     </div>
   </footer>
